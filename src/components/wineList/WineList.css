@@ -1,0 +1,43 @@
+.WineList_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.product-card-content {
+  flex-grow: 1;
+  text-align: center;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid rgb(83, 17, 17);
+  border-radius: 5px;
+  background-color: #f5f5f5;
+  width: 25%;
+}
+
+.product-card-name {
+  font-size: 40%px;
+}
+
+.color-squares {
+  display: flex;
+  justify-content: center;
+}
+
+.square {
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+}
+
+.rose {
+  background-color: #f1bcb6; /* Change the color as needed */
+}
+
+.white {
+  background-color: #f3b732; /* Change the color as needed */
+}
+
+.red {
+  background-color: #bd0044; /* Change the color as needed */
+}
