@@ -19,7 +19,8 @@ const AddWineModal = ({ isOpen, onClose }) => {
     setNewWine((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleAddWine = async () => {
+  const handleAddWine = async (e) => {
+    e.preventDefault();
     console.log(newWine);
     // Check if all required fields are filled
     if (

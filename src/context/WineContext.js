@@ -12,36 +12,63 @@ export function WineProvider({ children }) {
   const [wineData, setWineData] = useState([]);
 
   useEffect(() => {
+    // Fetch initial wine data
     getWines();
-  }, []);
+
+    // Set up a periodic refresh every 5 seconds (adjust as needed)
+    const intervalId = setInterval(() => {
+      getWines();
+    }, 5000);
+
+    // Clean up the interval when the component unmounts
+    return () => {
+      clearInterval(intervalId); // Use intervalId instead of refreshInterval
+    };
+  }, []); // Remove refreshInterval fro
 
   async function getWines() {
-    const { data, error } = await supabase.from("wines").select("*");
-    if (error) console.log("Error fetching wines", error);
-    if (data) setWineData(data);
+    try {
+      const { data, error } = await supabase.from("wines").select("*");
+
+      if (error) {
+        console.error("Error fetching wines", error);
+        return;
+      }
+
+      if (data) {
+        setWineData(data);
+      }
+    } catch (error) {
+      console.error("Unexpected error fetching wines", error);
+    }
   }
 
   const [filteredWineData, setFilteredWineData] = useState([]);
 
   const addWine = async (wine) => {
-    // Add the new wine to the Supabase table
-    const { data, error } = await supabase.from("wines").insert([wine]);
+    try {
+      const { data, error } = await supabase.from("wines").insert([wine]);
 
-    if (error) {
-      console.error("Error adding wine", error);
-    } else {
-      // Update the wineData state after successful addition
-      setWineData([...wineData, data[0]]);
+      if (error) {
+        console.error("Error adding wine", error);
+        return;
+      }
+
+      if (data && data.length > 0) {
+        setWineData([...wineData, data[0]]);
+      }
+    } catch (error) {
+      console.error("Unexpected error adding wine", error);
     }
   };
 
   const deleteWine = async (wineId) => {
     const { error } = await supabase.from("wines").delete().eq("id", wineId);
+
     if (error) {
-      console.log("Error deleting wine", error);
+      console.error("Error deleting wine", error);
     } else {
-      // Update the wineData state after successful deletion
-      setWineData(wineData.filter((wine) => wine.id !== wineId));
+      setWineData((prevData) => prevData.filter((wine) => wine.id !== wineId));
     }
   };
 

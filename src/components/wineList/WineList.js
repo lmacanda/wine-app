@@ -5,9 +5,9 @@ import AddWineModal from "../addWineModal/AddWineModal";
 import "./WineList.css";
 
 function WineList() {
-  const { filteredWineData } = useWineContext();
+  const { filteredWineData, deleteWine } = useWineContext();
   const [displayedData, setDisplayedData] = useState([]);
-  const { deleteWine } = useWineContext();
+
   const [isAddWineModalOpen, setIsAddWineModalOpen] = useState(false);
 
   const handleOpenAddWineModal = () => {

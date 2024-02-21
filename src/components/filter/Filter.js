@@ -34,36 +34,24 @@ const Filter = () => {
     setFilteredWineData(filteredData);
   }, [regionFilter, colorFilter, grapesFilter, wineData, setFilteredWineData]);
 
-  const updateUniqueGrapesAndRegions = useCallback(
-    (selectedColor) => {
-      const filteredGrapes = wineData
-        .filter(
-          (wine) => wine.color.toLowerCase() === selectedColor.toLowerCase()
-        )
-        .map((wine) => wine.grapes);
+  const updateUniqueGrapesAndRegions = useCallback(() => {
+    const allGrapes = wineData.map((wine) => wine.grapes);
+    const allRegions = wineData.map((wine) => wine.region);
 
-      const filteredRegions = wineData
-        .filter(
-          (wine) => wine.color.toLowerCase() === selectedColor.toLowerCase()
-        )
-        .map((wine) => wine.region);
+    const uniqueGrapesOptions = Array.from(new Set(allGrapes.flat()));
+    const uniqueRegionsOptions = Array.from(new Set(allRegions.flat()));
 
-      const uniqueGrapesOptions = Array.from(new Set(filteredGrapes.flat()));
-      const uniqueRegionsOptions = Array.from(new Set(filteredRegions.flat()));
-
-      setUniqueGrapes(uniqueGrapesOptions);
-      setUniqueRegions(uniqueRegionsOptions);
-    },
-    [wineData]
-  );
+    setUniqueGrapes(uniqueGrapesOptions);
+    setUniqueRegions(uniqueRegionsOptions);
+  }, [wineData]);
 
   useEffect(() => {
     filterWineData();
   }, [filterWineData]);
 
   useEffect(() => {
-    updateUniqueGrapesAndRegions(colorFilter);
-  }, [colorFilter, updateUniqueGrapesAndRegions]);
+    updateUniqueGrapesAndRegions();
+  }, [updateUniqueGrapesAndRegions]);
 
   const handleColorChange = (e) => {
     const selectedColor = e.target.value;
@@ -71,7 +59,6 @@ const Filter = () => {
     setColorFilter(selectedColor);
     setGrapesFilter(""); // Reset grape filter when color changes
     setRegionFilter(""); // Reset region filter when color changes
-    updateUniqueGrapesAndRegions(selectedColor);
   };
 
   return (
